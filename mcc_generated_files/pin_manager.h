@@ -67,19 +67,41 @@
 #define PULL_UP_ENABLED      1
 #define PULL_UP_DISABLED     0
 
-// get/set channel_AN0 aliases
-#define channel_AN0_TRIS                 TRISAbits.TRISA0
-#define channel_AN0_LAT                  LATAbits.LATA0
-#define channel_AN0_PORT                 PORTAbits.RA0
-#define channel_AN0_ANS                  anselRA0bits.anselRA0
-#define channel_AN0_SetHigh()            do { LATAbits.LATA0 = 1; } while(0)
-#define channel_AN0_SetLow()             do { LATAbits.LATA0 = 0; } while(0)
-#define channel_AN0_Toggle()             do { LATAbits.LATA0 = ~LATAbits.LATA0; } while(0)
-#define channel_AN0_GetValue()           PORTAbits.RA0
-#define channel_AN0_SetDigitalInput()    do { TRISAbits.TRISA0 = 1; } while(0)
-#define channel_AN0_SetDigitalOutput()   do { TRISAbits.TRISA0 = 0; } while(0)
-#define channel_AN0_SetAnalogMode()      do { anselRA0bits.anselRA0 = 1; } while(0)
-#define channel_AN0_SetDigitalMode()     do { anselRA0bits.anselRA0 = 0; } while(0)
+// get/set RC6 procedures
+#define RC6_SetHigh()               do { LATCbits.LATC6 = 1; } while(0)
+#define RC6_SetLow()                do { LATCbits.LATC6 = 0; } while(0)
+#define RC6_Toggle()                do { LATCbits.LATC6 = ~LATCbits.LATC6; } while(0)
+#define RC6_GetValue()              PORTCbits.RC6
+#define RC6_SetDigitalInput()       do { TRISCbits.TRISC6 = 1; } while(0)
+#define RC6_SetDigitalOutput()      do { TRISCbits.TRISC6 = 0; } while(0)
+
+// get/set voltage aliases
+#define voltage_TRIS                 TRISFbits.TRISF0
+#define voltage_LAT                  LATFbits.LATF0
+#define voltage_PORT                 PORTFbits.RF0
+#define voltage_ANS                  anselRF0bits.anselRF0
+#define voltage_SetHigh()            do { LATFbits.LATF0 = 1; } while(0)
+#define voltage_SetLow()             do { LATFbits.LATF0 = 0; } while(0)
+#define voltage_Toggle()             do { LATFbits.LATF0 = ~LATFbits.LATF0; } while(0)
+#define voltage_GetValue()           PORTFbits.RF0
+#define voltage_SetDigitalInput()    do { TRISFbits.TRISF0 = 1; } while(0)
+#define voltage_SetDigitalOutput()   do { TRISFbits.TRISF0 = 0; } while(0)
+#define voltage_SetAnalogMode()      do { anselRF0bits.anselRF0 = 1; } while(0)
+#define voltage_SetDigitalMode()     do { anselRF0bits.anselRF0 = 0; } while(0)
+
+// get/set current aliases
+#define current_TRIS                 TRISFbits.TRISF1
+#define current_LAT                  LATFbits.LATF1
+#define current_PORT                 PORTFbits.RF1
+#define current_ANS                  anselRF1bits.anselRF1
+#define current_SetHigh()            do { LATFbits.LATF1 = 1; } while(0)
+#define current_SetLow()             do { LATFbits.LATF1 = 0; } while(0)
+#define current_Toggle()             do { LATFbits.LATF1 = ~LATFbits.LATF1; } while(0)
+#define current_GetValue()           PORTFbits.RF1
+#define current_SetDigitalInput()    do { TRISFbits.TRISF1 = 1; } while(0)
+#define current_SetDigitalOutput()   do { TRISFbits.TRISF1 = 0; } while(0)
+#define current_SetAnalogMode()      do { anselRF1bits.anselRF1 = 1; } while(0)
+#define current_SetDigitalMode()     do { anselRF1bits.anselRF1 = 0; } while(0)
 
 
 /**

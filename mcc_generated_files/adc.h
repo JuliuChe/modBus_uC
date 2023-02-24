@@ -94,7 +94,8 @@ typedef struct
 
 typedef enum
 {
-    channel_AN0 =  0x0
+    voltage =  0x5,
+    current =  0x6
 } adc_channel_t;
 
 /**

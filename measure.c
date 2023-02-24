@@ -1,11 +1,11 @@
 #include <xc.h>
 
 #include "measure.h"
-
+#include "mcc_generated_files/mcc.h"
 #define VOLTAGE_CHANNEL 0
 #define CURRENT_CHANNEL 1
 
-#define ADC_RESOLUTION  4096 - 1
+#define ADC_RESOLUTION  (1024 - 1)
 #define ADC_REFH        3300
 #define GAIN            66
 #define RESISTOR        3
@@ -33,8 +33,15 @@ static uint16_t measure_adc(uint8_t channel)
 
 uint16_t measure_voltage()
 {
-	// TODO -> complete measure of voltage
-
+   uint32_t result=0; 
+   uint16_t mVolt;
+   for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)
+   {
+    result += ADC_GetConversion(voltage);
+   } 
+   result = result / AVERAGE_SAMPLES;
+   mVolt = (ADC_REFH * result) / ADC_RESOLUTION;
+    return mVolt;
 }
 
 uint16_t measure_current(uint16_t offset)

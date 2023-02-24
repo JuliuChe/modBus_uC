@@ -1,24 +1,24 @@
 /**
-  @Generated PIC10 / PIC12 / PIC16 / PIC18 MCUs Source File
+  ECCP1 Generated Driver File
 
-  @Company:
+  @Company
     Microchip Technology Inc.
 
-  @File Name:
-    mcc.c
+  @File Name
+    eccp1.c
 
-  @Summary:
-    This is the mcc.c file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary
+    This is the generated driver implementation file for the ECCP1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+  @Description
+    This source file provides implementations for driver APIs for ECCP1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
         Device            :  PIC18F97J60
-        Driver Version    :  2.00
+        Driver Version    :  2.01
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.36 and above or later
-        MPLAB             :  MPLAB X 6.00
+        Compiler          :  XC8 2.36 and above
+         MPLAB 	          :  MPLAB X 6.00
 */
 
 /*
@@ -44,30 +44,17 @@
     SOFTWARE.
 */
 
-#include "mcc.h"
-
-
-void SYSTEM_Initialize(void)
+#include <xc.h>
+#include "eccp1.h"
+void ECCP1_Initialize(void)
 {
-
-    PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
-    ECCP1_Initialize();
-    ADC_Initialize();
-    TMR2_Initialize();
-    TMR0_Initialize();
-    EUSART1_Initialize();
+	
+	// CCP1M off/reset; DC1B 0; P1M single; 
+	CCP1CON = 0x00;    
+	
+	// CCPR1H 0; 
+	CCPR1H = 0x00;    
+	
+	// CCPR1L 0; 
+	CCPR1L = 0x00;    
 }
-
-void OSCILLATOR_Initialize(void)
-{
-    // SCS Primary_OSC; OSTS intosc; IDLEN disabled; 
-    OSCCON = 0x02;
-    // PLLEN disabled; PPST0 disabled; PPRE divide_by_3; PPST1 divide_by_3; 
-    OSCTUNE = 0x00;
-}
-
-
-/**
- End of File
-*/
