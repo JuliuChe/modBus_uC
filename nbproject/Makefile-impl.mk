@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=modbus.X
+PROJECTNAME=modBus_uC
 
 # Active Configuration
 DEFAULTCONF=default
