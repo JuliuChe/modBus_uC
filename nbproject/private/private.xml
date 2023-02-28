@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/main.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/eusart1.c</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/adc.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/device_config.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/mcc.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/tmr2.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/adc.h</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/measure.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/pin_manager.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/tmr0.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.40/pic/sources/c99/common/__lldiv.c</file>
-            <file>file:/C:/Program%20Files/Microchip/xc8/v2.40/pic/sources/c99/common/Umul32.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/lcd/lcd.c</file>
         </group>
     </open-files>
 </project-private>

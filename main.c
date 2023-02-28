@@ -42,8 +42,10 @@
 */
 
 #include "mcc_generated_files/mcc.h"
+#include "lcd/lcd.h"
 #include "measure.h"
-uint16_t mVolts;
+uint32_t mVolts;
+uint32_t mAmps;
 /*
                          Main application
  */
@@ -68,10 +70,20 @@ void main(void)
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
 
+    Lcd_Init();
+
     while (1)
     {
        mVolts = measure_voltage();
-   
+        mAmps = measure_current(0);
+
+                char tmpstr[60];
+
+        sprintf(tmpstr, "mAmps : %d", mAmps);
+       LCD_2x16_WriteMsg(tmpstr, 0);
+       
+       sprintf(tmpstr, "mVolts : %d", mVolts);
+       LCD_2x16_WriteMsg(tmpstr, 1);
        
        
        

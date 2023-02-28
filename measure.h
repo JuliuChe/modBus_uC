@@ -20,7 +20,7 @@ void adc_init(void);
  * @return The offset 
  */
 
-uint16_t measure_voltage(void);
+uint32_t measure_voltage(void);
 
 /**
  * Measure the current on the solar panel.
@@ -30,6 +30,6 @@ uint16_t measure_voltage(void);
  * @return the current in microamperes
  */
 
-uint16_t measure_current(uint16_t offset);
+uint32_t measure_current(uint16_t offset);
 
 #endif /* MEASURE_H */

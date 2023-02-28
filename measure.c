@@ -31,10 +31,10 @@ static uint16_t measure_adc(uint8_t channel)
 	// TODO -> complete adc measure
 }
 
-uint16_t measure_voltage()
+uint32_t measure_voltage()
 {
    uint32_t result=0; 
-   uint16_t mVolt;
+   uint32_t mVolt;
    for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)
    {
     result += ADC_GetConversion(voltage);
@@ -44,7 +44,23 @@ uint16_t measure_voltage()
     return mVolt;
 }
 
-uint16_t measure_current(uint16_t offset)
+uint32_t measure_current(uint16_t offset)
 {
-	// TODO -> complete measure of current
+    uint32_t result=0; 
+    uint32_t mAmp;
+    for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)    {
+        result += ADC_GetConversion(current);
+    } 
+    result = result / AVERAGE_SAMPLES;
+    mAmp = ( result*1000) / (ADC_RESOLUTION*GAIN*RESISTOR);
+    /*if (mAmp<offset)
+    {
+        mAmp=0;
+    }
+        else
+        {
+        mAmp-=offset;
+        }
+      */
+    return mAmp;
 }
