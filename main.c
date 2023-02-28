@@ -71,7 +71,8 @@ void main(void)
     while (1)
     {
        mVolts = measure_voltage();
-     
+       uint32_t mCurrent = 3;
+       
        
        
     }
