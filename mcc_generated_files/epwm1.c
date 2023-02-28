@@ -1,24 +1,24 @@
 /**
-  ECCP1 Generated Driver API Header File
+  EPWM1 Generated Driver File
 
   @Company
     Microchip Technology Inc.
 
   @File Name
-    eccp1.h
+    epwm1.c
 
   @Summary
-    This is the generated header file for the ECCP1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the generated driver implementation file for the EPWM1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description
-    This header file provides APIs for driver for ECCP1.
+    This source file provides implementations for driver APIs for EPWM1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
         Device            :  PIC18F97J60
         Driver Version    :  2.01
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
-        MPLAB 	          :  MPLAB X 6.00
+         MPLAB 	          :  MPLAB X 6.00
 */
 
 /*
@@ -44,18 +44,53 @@
     SOFTWARE.
 */
 
-#ifndef ECCP1_H
-#define ECCP1_H
+/**
+  Section: Included Files
+*/
 
 #include <xc.h>
-/**
- * Initialization routine that takes inputs from the GUI.
- * @prototype        void ECCP1_Initialize(void)
- * @param           none
- * @return           none
- * @comment          
- * @usage            ECCP1_Initialize();
- */
-void ECCP1_Initialize(void);
+#include "epwm1.h"
 
-#endif  // ECCP1.h
+/**
+  Section: Macro Declarations
+*/
+
+#define PWM1_INITIALIZE_DUTY_VALUE    3
+
+/**
+  Section: EPWM Module APIs
+*/
+
+void EPWM1_Initialize(void)
+{
+    // Set the EPWM1 to the options selected in the User Interface
+	
+	// CCP1M P1A,P1C: active high; P1B,P1D: active high; DC1B 3; P1M single; 
+	CCP1CON = 0x3C;    
+	
+	// ECCPASE operating; PSSBD P1BP1D_0; PSSAC P1AP1C_0; ECCPAS disabled; 
+	ECCP1AS = 0x00;    
+	
+	// P1RSEN automatic_restart; P1DC0 0; 
+	ECCP1DEL = 0x80;    
+	
+	// CCPR1H 0; 
+	CCPR1H = 0x00;    
+	
+	// CCPR1L 0; 
+	CCPR1L = 0x00;    
+
+}
+
+void EPWM1_LoadDutyValue(uint16_t dutyValue)
+{
+   // Writing to 8 MSBs of pwm duty cycle in CCPRL register
+    CCPR1L = ((dutyValue & 0x03FC)>>2);
+    
+   // Writing to 2 LSBs of pwm duty cycle in CCPCON register
+    CCP1CON = ((uint8_t)(CCP1CON & 0xCF) | ((dutyValue & 0x0003)<<4));
+}
+/**
+ End of File
+*/
+

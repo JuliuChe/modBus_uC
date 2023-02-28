@@ -67,6 +67,14 @@
 #define PULL_UP_ENABLED      1
 #define PULL_UP_DISABLED     0
 
+// get/set RC2 procedures
+#define RC2_SetHigh()               do { LATCbits.LATC2 = 1; } while(0)
+#define RC2_SetLow()                do { LATCbits.LATC2 = 0; } while(0)
+#define RC2_Toggle()                do { LATCbits.LATC2 = ~LATCbits.LATC2; } while(0)
+#define RC2_GetValue()              PORTCbits.RC2
+#define RC2_SetDigitalInput()       do { TRISCbits.TRISC2 = 1; } while(0)
+#define RC2_SetDigitalOutput()      do { TRISCbits.TRISC2 = 0; } while(0)
+
 // get/set RC6 procedures
 #define RC6_SetHigh()               do { LATCbits.LATC6 = 1; } while(0)
 #define RC6_SetLow()                do { LATCbits.LATC6 = 0; } while(0)

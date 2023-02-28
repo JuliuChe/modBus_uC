@@ -1,24 +1,24 @@
 /**
-  ECCP1 Generated Driver File
+  EPWM1 Generated Driver File
 
   @Company
     Microchip Technology Inc.
 
   @File Name
-    eccp1.c
+    epwm1.h
 
   @Summary
-    This is the generated driver implementation file for the ECCP1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the generated driver implementation file for the EPWM1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description
-    This source file provides implementations for driver APIs for ECCP1.
+    This header file provides implementations for driver APIs for EPWM1.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.8
         Device            :  PIC18F97J60
         Driver Version    :  2.01
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.36 and above
-         MPLAB 	          :  MPLAB X 6.00
+        MPLAB             :  MPLAB X 6.00
 */
 
 /*
@@ -44,17 +44,90 @@
     SOFTWARE.
 */
 
+#ifndef EPWM1_H
+#define EPWM1_H
+
+/**
+  Section: Included Files
+*/
+
 #include <xc.h>
-#include "eccp1.h"
-void ECCP1_Initialize(void)
-{
-	
-	// CCP1M off/reset; DC1B 0; P1M single; 
-	CCP1CON = 0x00;    
-	
-	// CCPR1H 0; 
-	CCPR1H = 0x00;    
-	
-	// CCPR1L 0; 
-	CCPR1L = 0x00;    
-}
+#include <stdint.h>
+
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    extern "C" {
+
+#endif
+
+/**
+  Section: EPWM Module APIs
+*/
+
+/**
+  @Summary
+    Initializes the EPWM1
+
+  @Description
+    This routine initializes the EPWM1 module.
+    This routine must be called before any other EPWM1 routine is called.
+    This routine should only be called once during system initialization.
+
+  @Preconditions
+    None
+
+  @Param
+    None
+
+  @Returns
+    None
+
+  @Comment
+    
+
+ @Example
+    <code>
+    uint16_t dutycycle;
+
+    ECCP1_Initialize();
+	EPWM1_LoadDutyValue(dutycycle);
+    </code>
+ */
+void EPWM1_Initialize(void);
+
+/**
+  @Summary
+    Loads 16-bit duty cycle.
+
+  @Description
+    This routine loads the 16 bit duty cycle value.
+
+  @Preconditions
+    EPWM1_Initialize() function should have been called before calling this function.
+
+  @Param
+    Pass 16bit duty cycle value.
+
+  @Returns
+    None
+
+  @Example
+    <code>
+    uint16_t dutycycle;
+
+    EPWM1_Initialize();
+    EPWM1_LoadDutyValue(dutycycle);
+    </code>
+*/
+void EPWM1_LoadDutyValue(uint16_t dutyValue);
+        
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+    }
+
+#endif
+
+#endif	//EPWM1_H
+/**
+ End of File
+*/

@@ -11,7 +11,7 @@
 #define RESISTOR        3
 
 // Number of samples to do the averaging during measures
-#define AVERAGE_SAMPLES 8
+#define AVERAGE_SAMPLES 32
 
 void adc_init(void)
 {
@@ -47,20 +47,22 @@ uint32_t measure_voltage()
 uint32_t measure_current(uint16_t offset)
 {
     uint32_t result=0; 
-    uint32_t mAmp;
+    uint32_t mV;
     for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)    {
         result += ADC_GetConversion(current);
     } 
     result = result / AVERAGE_SAMPLES;
-    mAmp = ( result*1000) / (ADC_RESOLUTION*GAIN*RESISTOR);
-    /*if (mAmp<offset)
+    mV = ( result*ADC_REFH) / (ADC_RESOLUTION);
+    uint32_t uAmp = (mV*1000)/(GAIN*RESISTOR);
+    
+    if (uAmp<offset)
     {
-        mAmp=0;
+        uAmp=0;
     }
         else
         {
-        mAmp-=offset;
+        uAmp-=offset;
         }
-      */
-    return mAmp;
+      
+    return uAmp;
 }

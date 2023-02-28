@@ -42,10 +42,13 @@
 */
 
 #include "mcc_generated_files/mcc.h"
+#include "mcc_generated_files/epwm1.h"
 #include "lcd/lcd.h"
 #include "measure.h"
+
 uint32_t mVolts;
-uint32_t mAmps;
+uint32_t muAmps;
+uint32_t firstMuAmps = 0;
 /*
                          Main application
  */
@@ -69,20 +72,24 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-
+    
+    EPWM1_LoadDutyValue(0);
+    firstMuAmps = measure_current(0);
     Lcd_Init();
+    EPWM1_LoadDutyValue(512);
 
     while (1)
     {
        mVolts = measure_voltage();
-        mAmps = measure_current(0);
+        muAmps = measure_current(firstMuAmps);
 
-                char tmpstr[60];
+               
+        char tmpstr[60];
 
-        sprintf(tmpstr, "mAmps : %d", mAmps);
+       sprintf(tmpstr, "I = %04d[uA]", muAmps);
        LCD_2x16_WriteMsg(tmpstr, 0);
        
-       sprintf(tmpstr, "mVolts : %d", mVolts);
+       sprintf(tmpstr, "U = %03d[mV]", mVolts);
        LCD_2x16_WriteMsg(tmpstr, 1);
        
        
