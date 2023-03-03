@@ -42,9 +42,9 @@
 */
 
 #include "mcc_generated_files/mcc.h"
-#include "mcc_generated_files/epwm1.h"
 #include "lcd/lcd.h"
 #include "measure.h"
+#include "modbus.h"
 
 uint32_t mVolts;
 uint32_t muAmps;
@@ -62,35 +62,46 @@ void main(void)
     // Use the following macros to:
 
     // Enable the Global Interrupts
-    //INTERRUPT_GlobalInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
 
     // Disable the Global Interrupts
     //INTERRUPT_GlobalInterruptDisable();
 
     // Enable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_PeripheralInterruptEnable();
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
     
     EPWM1_LoadDutyValue(0);
+    
+    __delay_ms(5);
     firstMuAmps = measure_current(0);
+    
     Lcd_Init();
     EPWM1_LoadDutyValue(512);
 
+    modbus_init(0x80);
+    
+    
     while (1)
     {
        mVolts = measure_voltage();
-        muAmps = measure_current(firstMuAmps);
+       input_registers[0]=mVolts;
+       
+       muAmps = measure_current(firstMuAmps);
+       input_registers[1]=muAmps;
 
-               
+       uint16_t ZControl = holding_registers[0];       
+       EPWM1_LoadDutyValue(ZControl);
+       
+       
         char tmpstr[60];
-
        sprintf(tmpstr, "I = %04d[uA]", muAmps);
-       LCD_2x16_WriteMsg(tmpstr, 0);
+       //LCD_2x16_WriteMsg(tmpstr, 0);
        
        sprintf(tmpstr, "U = %03d[mV]", mVolts);
-       LCD_2x16_WriteMsg(tmpstr, 1);
+       //LCD_2x16_WriteMsg(tmpstr, 1);
        
        
        

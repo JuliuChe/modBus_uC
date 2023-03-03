@@ -15,11 +15,12 @@
         <itemPath>mcc_generated_files/tmr2.h</itemPath>
         <itemPath>mcc_generated_files/eusart1.h</itemPath>
         <itemPath>mcc_generated_files/epwm1.h</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
       </logicalFolder>
       <itemPath>crc.h</itemPath>
       <itemPath>measure.h</itemPath>
-      <itemPath>modbus.h</itemPath>
       <itemPath>lcd/lcd.h</itemPath>
+      <itemPath>modbus.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -39,10 +40,12 @@
         <itemPath>mcc_generated_files/tmr2.c</itemPath>
         <itemPath>mcc_generated_files/eusart1.c</itemPath>
         <itemPath>mcc_generated_files/epwm1.c</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>measure.c</itemPath>
       <itemPath>lcd/lcd.c</itemPath>
+      <itemPath>modbus.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -50,6 +53,7 @@
       <itemPath>Makefile</itemPath>
       <itemPath>modbus.mc3</itemPath>
     </logicalFolder>
+    <itemPath>crc.c</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
@@ -247,6 +251,48 @@
         <property key="user-pack-device-support" value=""/>
         <property key="wpo-lto" value="false"/>
       </XC8-config-global>
+      <pic-as-assembler>
+        <property key="fmax-errors" value="20"/>
+        <property key="list-custom-assembler-options" value=""/>
+        <property key="list-custom-preprocessor-options" value=""/>
+        <property key="list-ddefine-symbols" value=""/>
+        <property key="list-define-symbols" value=""/>
+        <property key="list-include-directories" value=""/>
+        <property key="suppress-warnings" value="false"/>
+        <property key="verbose" value="false"/>
+        <property key="warning-level" value="0"/>
+        <property key="xassembler-with-cpp" value="true"/>
+      </pic-as-assembler>
+      <pic-as-global>
+        <property key="custom-dfp" value=""/>
+        <property key="instruction-set" value="std"/>
+        <property key="summary-class" value="false"/>
+        <property key="summary-file" value="false"/>
+        <property key="summary-hex" value="false"/>
+        <property key="summary-mem" value="true"/>
+        <property key="summary-psect" value="false"/>
+        <property key="summary-sha1" value="false"/>
+        <property key="summary-sha256" value="false"/>
+        <property key="summary-xml" value="false"/>
+        <property key="summary-xmlfull" value="false"/>
+      </pic-as-global>
+      <pic-as-linker>
+        <property key="linker-callgraph" value="std"/>
+        <property key="linker-checksum" value=""/>
+        <property key="linker-custom-options" value=""/>
+        <property key="linker-fill" value=""/>
+        <property key="linker-format-hex-file-for-download" value="false"/>
+        <property key="linker-libraries" value=""/>
+        <property key="linker-library-search-paths" value=""/>
+        <property key="linker-map-file-generation" value="true"/>
+        <property key="linker-maxi-chip" value="false"/>
+        <property key="linker-produce-intel-hex-extended-address-zero-output"
+                  value="false"/>
+        <property key="linker-ram" value=""/>
+        <property key="linker-reserve" value=""/>
+        <property key="linker-rom" value=""/>
+        <property key="linker-serial" value=""/>
+      </pic-as-linker>
       <snap>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="Freeze Peripherals" value="true"/>
@@ -262,7 +308,7 @@
         <property key="debugoptions.debug-startup" value="Use system settings"/>
         <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="debugoptions.useswbreakpoints" value="true"/>
         <property key="freeze.timers" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

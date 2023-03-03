@@ -54,6 +54,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
 #ifdef __cplusplus  // Provide C++ Compatibility
 
     extern "C" {
@@ -160,12 +161,13 @@ void TMR0_StartTimer(void);
 */
 void TMR0_StopTimer(void);
 
+
 /**
   @Summary
-    Reads the 8 bits TMR0 register value.
+    Reads the 16 bits TMR0 register value.
 
   @Description
-    This function reads the 8 bits TMR0 register value and return it.
+    This function reads the 16 bits TMR0 register value and return it.
 
   @Preconditions
     Initialize  the TMR0 before calling this function.
@@ -174,7 +176,7 @@ void TMR0_StopTimer(void);
     None
 
   @Returns
-    This function returns the 8 bits value of TMR0 register.
+    This function returns the 16 bits value of TMR0 register.
 
   @Example
     <code>
@@ -197,10 +199,10 @@ uint8_t TMR0_ReadTimer(void);
 
 /**
   @Summary
-    Writes the 8 bits value to TMR0 register.
+    Writes the 16 bits value to TMR0 register.
 
   @Description
-    This function writes the 8 bits value to TMR0 register.
+    This function writes the 16 bits value to TMR0 register.
     This function must be called after the initialization of TMR0.
 
   @Preconditions
@@ -214,12 +216,12 @@ uint8_t TMR0_ReadTimer(void);
 
   @Example
     <code>
-    #define PERIOD 0x80
-    #define ZERO   0x00
+    #define PERIOD 0x8000
+    #define ZERO   0x0000
 
     while(1)
     {
-        // Read the TMR0 register
+        //Read the TMR0 register
         if(ZERO == TMR0_ReadTimer())
         {
             // Do something else...
@@ -236,10 +238,10 @@ void TMR0_WriteTimer(uint8_t timerVal);
 
 /**
   @Summary
-    Reload the 8 bits value to TMR0 register.
+    Reload the 16 bits value to TMR0 register.
 
   @Description
-    This function reloads the 8 bit value to TMR0 register.
+    This function reloads the 16 bit value to TMR0 register.
     This function must be called to write initial value into TMR0 register.
 
   @Preconditions
@@ -270,44 +272,78 @@ void TMR0_WriteTimer(uint8_t timerVal);
 */
 void TMR0_Reload(void);
 
-
 /**
   @Summary
-    Boolean routine to poll or to check for the overflow flag on the fly.
+    Timer Interrupt Service Routine
 
   @Description
-    This function is called to check for the timer overflow flag.
-    This function is usd in timer polling method.
+    Timer Interrupt Service Routine is called by the Interrupt Manager.
 
   @Preconditions
-    Initialize  the TMR0 module before calling this routine.
+    Initialize  the TMR0 module with interrupt before calling this isr.
 
   @Param
     None
 
   @Returns
-    true - timer overflow has occured.
-    false - timer overflow has not occured.
+    None
+ */
+void TMR0_ISR(void);
 
-  @Example
-    <code>
-    while(1)
-    {
-        // check the overflow flag
-        if(TMR0_HasOverflowOccured())
-        {
-            // Do something else...
 
-            // clear the TMR0 interrupt flag
-            TMR0IF = 0;
+/**
+  @Summary
+    Set Timer Interrupt Handler
 
-            // Reload the TMR0 value
-            TMR0_Reload();
-        }
-    }
-    </code>
+  @Description
+    This sets the function to be called during the ISR
+
+  @Preconditions
+    Initialize  the TMR0 module with interrupt before calling this.
+
+  @Param
+    Address of function to be set
+
+  @Returns
+    None
 */
-bool TMR0_HasOverflowOccured(void);
+ void TMR0_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Timer Interrupt Handler
+
+  @Description
+    This is a function pointer to the function that will be called during the ISR
+
+  @Preconditions
+    Initialize  the TMR0 module with interrupt before calling this isr.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+extern void (*TMR0_InterruptHandler)(void);
+
+/**
+  @Summary
+    Default Timer Interrupt Handler
+
+  @Description
+    This is the default Interrupt Handler function
+
+  @Preconditions
+    Initialize  the TMR0 module with interrupt before calling this isr.
+
+  @Param
+    None
+
+  @Returns
+    None
+*/
+void TMR0_DefaultInterruptHandler(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

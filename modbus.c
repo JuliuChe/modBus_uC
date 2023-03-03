@@ -1,6 +1,6 @@
 #include "modbus.h"
+#include "mcc_generated_files/mcc.h"
 #include "crc.h"
-#include "uart.h"
 #include <xc.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -27,25 +27,44 @@ uint16_t holding_registers[2];
  **/
 uint8_t rx_buf[256];
 uint8_t tx_buf[256];
+uint16_t index=0;
 
 // Current position pointer for storing receive position
 uint8_t recPtr = 0;
 
 void modbus_timer(void)
 {
-	// TODO -> complete what to do on modbus timer event
+	    TMR0_StopTimer();
+        modbus_analyse_and_answer();
+        TMR0_StartTimer();
+        TMR0_Reload();
    
 }
 
 uint8_t modbus_analyse_and_answer(void)
 {
-	// TODO -> complete the modbus analyse and answer
-  
+    index = eusart1RxCount;
+    
+    for(int i=0; i<index; i++)
+    {
+    rx_buf[i]=EUSART1_Read();
+    }
+    if(rx_buf[0]==0x80){
+        
+       //Check if CRC is correct using function :  CRC16(rx_buf, index)
+       //swap 
+       //Switch Case for each function : 03, 04, etc....
+        
+
+        
+    }
+ 
+//return size_of_answer  
 }
 
 void modbus_char_recvd(uint8_t c)
 {
-	// TODO -> complete modbus char receive 
+//	TMR0 reset 
 }
 
 void modbus_send(uint8_t length)
@@ -57,7 +76,7 @@ void modbus_send(uint8_t length)
 	length += 2; // add 2 CRC bytes for total size
 
 	// For all the bytes to be transmitted
-  uart_send(tx_buf,length);
+ // uart_send(tx_buf,length);
 }
 
 void modbus_init(uint8_t address)
