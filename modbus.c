@@ -36,8 +36,8 @@ void modbus_timer(void)
 {
 	    TMR0_StopTimer();
         modbus_analyse_and_answer();
-        TMR0_StartTimer();
         TMR0_Reload();
+        TMR0_StartTimer();
    
 }
 
@@ -49,14 +49,39 @@ uint8_t modbus_analyse_and_answer(void)
     {
     rx_buf[i]=EUSART1_Read();
     }
+    uint8_t length =0;
     if(rx_buf[0]==0x80){
-        
-       //Check if CRC is correct using function :  CRC16(rx_buf, index)
-       //swap 
-       //Switch Case for each function : 03, 04, etc....
-        
-
-        
+        if((rx_buf[index-1]+rx_buf[index-2])==CRC16(rx_buf, (index-2))
+        {
+            switch(*rx_buf)
+            {
+                case READ_INPUT_REGISTERS:
+                    uint16_t address=(rx_buf[1]<<8)+rx_buf[2];
+                    uint16_t numReg = (rx_buf[3]<<8)+rx_buf[4];
+                    tx_buf[0]=READ_INPUT_REGISTERS;
+                    if(numReg<128){
+                    tx_buf[1]=(2*numReg);
+                    }
+                    uint8_t* ptrTxBuf=tx_buf[2];
+                            length +=2;
+                    for(int i=0; i<numReg;i++)
+                    {
+                        (*ptrTxBuf)=(input_registers[i]>>8);
+                        ptrTxBuf++;
+                        (*ptrTxBuf)=input_registers[i]<<8;
+                        ptrTxBuf++;
+                        length+=2;
+                    }
+                            modbus_send(length);
+                    break;
+                case READ_HOLDING_REGISTERS:
+                    break;
+                case WRITE_SINGLE_REGISTER:
+                    break;
+                    
+                    
+            }
+        }
     }
  
 //return size_of_answer  
@@ -73,8 +98,13 @@ void modbus_send(uint8_t length)
 	uint8_t i;
 
 	// TODO -> complete modbus RCR calculation
+    uint8_t* ptrTxBuf=tx_buf[length];
+     temp16= CRC16(tx_buf, length);
+                    (*ptrTxBuf) = crc>>8;
+                    ptrTxBuf++;
+                    (*ptrTxBuf)=crc<<8;
 	length += 2; // add 2 CRC bytes for total size
-
+    uart_send(tx_buf, length);
 	// For all the bytes to be transmitted
  // uart_send(tx_buf,length);
 }
@@ -83,4 +113,5 @@ void modbus_init(uint8_t address)
 {
 	modbusAddress = address;
   // TODO -> configute timer for modbus usage
+    
 }

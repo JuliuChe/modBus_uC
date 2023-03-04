@@ -98,10 +98,10 @@ void main(void)
        
         char tmpstr[60];
        sprintf(tmpstr, "I = %04d[uA]", muAmps);
-       //LCD_2x16_WriteMsg(tmpstr, 0);
+       LCD_2x16_WriteMsg(tmpstr, 0);
        
        sprintf(tmpstr, "U = %03d[mV]", mVolts);
-       //LCD_2x16_WriteMsg(tmpstr, 1);
+       LCD_2x16_WriteMsg(tmpstr, 1);
        
        
        

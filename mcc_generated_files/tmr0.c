@@ -151,10 +151,6 @@ void TMR0_SetInterruptHandler(void (* InterruptHandler)(void)){
 }
 
 void TMR0_DefaultInterruptHandler(void){
-    //We need to 
-    //stop tmr0
-    //reAD uart rx BUFFER
-    //rELOAD tmr0
     // add your TMR0 interrupt custom code
     // or set custom function using TMR0_SetInterruptHandler()
 
