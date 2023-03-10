@@ -28,7 +28,7 @@ uint16_t holding_registers[2];
 uint8_t rx_buf[256];
 uint8_t tx_buf[256];
 uint16_t index=0;
-
+ uint8_t temp_CRC;
 // Current position pointer for storing receive position
 uint8_t recPtr = 0;
 
@@ -36,8 +36,7 @@ void modbus_timer(void)
 {
 	    TMR0_StopTimer();
         modbus_analyse_and_answer();
-        TMR0_Reload();
-        TMR0_StartTimer();
+
    
 }
 
@@ -50,45 +49,107 @@ uint8_t modbus_analyse_and_answer(void)
     rx_buf[i]=EUSART1_Read();
     }
     uint8_t length =0;
-    uint16_t address=0;
+    uint16_t addressReg=0;
     uint16_t numReg=0;
+     uint16_t valReg=0;
     uint8_t* ptrTxBuf;
-    if(rx_buf[0]==0x80){
-        if((rx_buf[index-1]+rx_buf[index-2])==CRC16(rx_buf, (index-2))
+
+   
+    temp_CRC =rx_buf[1];
+    if(rx_buf[0]==modbusAddress){
+        if((rx_buf[index-1]<<8 | rx_buf[index-2])==CRC16(rx_buf, (index-2)))
         {
-            switch(*rx_buf)
+            switch(rx_buf[1])
             {
                 case READ_INPUT_REGISTERS:
-                    address=(rx_buf[1]<<8)+rx_buf[2];
-                    numReg = (rx_buf[3]<<8)+rx_buf[4];
-                    tx_buf[0]=READ_INPUT_REGISTERS;
-                    if(numReg<128){
-                    tx_buf[1]=(2*numReg);
+                {
+                    addressReg=((rx_buf[2]<<8)|rx_buf[3]);
+                    numReg = ((rx_buf[4]<<8)|rx_buf[5]);
+                    
+                    
+                    tx_buf[0]=modbusAddress;
+                    tx_buf[1]=READ_INPUT_REGISTERS;
+                    if(numReg>2){
+                    //error                      
                     }
-                    ptrTxBuf=tx_buf[2];
-                            length +=2;
-                    for(int i=0; i<numReg;i++)
+                    else
+                    {
+                    tx_buf[2]=(2*numReg);
+                    }
+                    
+                    ptrTxBuf=&tx_buf[3];
+                            length +=3;
+                            
+                    for(int i=(addressReg); i<(addressReg+numReg);i++)
                     {
                         (*ptrTxBuf)=(input_registers[i]>>8);
                         ptrTxBuf++;
-                        (*ptrTxBuf)=input_registers[i]<<8;
+                        (*ptrTxBuf)=(input_registers[i]);
                         ptrTxBuf++;
                         length+=2;
                     }
                             modbus_send(length);
-                    break;
+                }
+                            break;
+                            
                 case READ_HOLDING_REGISTERS:
+                    {
+                    addressReg=((rx_buf[2]<<8)|rx_buf[3]);
+                    numReg = ((rx_buf[4]<<8)|rx_buf[5]);
+                    
+                    
+                    tx_buf[0]=modbusAddress;
+                    tx_buf[1]=READ_HOLDING_REGISTERS;
+                    if(numReg>1){
+                    //error                      
+                    }
+                    else
+                    {
+                    tx_buf[2]=(2*numReg);
+                    }
+                    
+                    ptrTxBuf=&tx_buf[3];
+                            length +=3;
+                            
+                    for(int i=(addressReg); i<(addressReg+numReg);i++)
+                    {
+                        (*ptrTxBuf)=(holding_registers[i]>>8);
+                        ptrTxBuf++;
+                        (*ptrTxBuf)=(holding_registers[i]);
+                        ptrTxBuf++;
+                        length+=2;
+                    }
+                            modbus_send(length);
+                }
+                    
                     break;
                 case WRITE_SINGLE_REGISTER:
+                      {
+                    addressReg=((rx_buf[2]<<8)|rx_buf[3]);
+                    valReg = ((rx_buf[4]<<8)|rx_buf[5]);
+                    holding_registers[0]=valReg;
+                    if(addressReg==0)
+                    {
+                    tx_buf[0]=modbusAddress;
+                    tx_buf[1]=WRITE_SINGLE_REGISTER;
+                    tx_buf[2]=0;
+                    tx_buf[3]=addressReg;    
+                    tx_buf[4]=(holding_registers[0]>>8);
+                    tx_buf[5]=(holding_registers[0]);
+                    length=6;
+                     }
+                    modbus_send(length);
+                }
                     break;
                     
                     
             }
         }
     }
+}
  
 //return size_of_answer  
-}
+
 
 void modbus_char_recvd(uint8_t c)
 {
@@ -98,16 +159,29 @@ void modbus_char_recvd(uint8_t c)
 void modbus_send(uint8_t length)
 {
 	uint16_t temp16; 
-	uint8_t i;
+	uint8_t i=0;
 
 	// TODO -> complete modbus RCR calculation
-    uint8_t* ptrTxBuf=tx_buf[length];
-     temp16= CRC16(tx_buf, length);
-                    (*ptrTxBuf) = crc>>8;
-                    ptrTxBuf++;
-                    (*ptrTxBuf)=crc<<8;
+    
+    uint8_t* ptrTxBuf=&tx_buf[length];
+    
+    temp16= CRC16(tx_buf, length);
+    (*ptrTxBuf) = temp16;
+    ptrTxBuf++;
+    (*ptrTxBuf)=temp16>>8;
+                    
 	length += 2; // add 2 CRC bytes for total size
-    uart_send(tx_buf, length);
+    ptrTxBuf=tx_buf;
+    for(i;i<length;i++)
+    {
+    if(EUSART1_is_tx_ready())
+    {
+    EUSART1_Write(*ptrTxBuf);
+    }
+    ptrTxBuf++;
+    }
+    temp16= CRC16(tx_buf, length);
+    
 	// For all the bytes to be transmitted
  // uart_send(tx_buf,length);
 }

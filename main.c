@@ -46,9 +46,9 @@
 #include "measure.h"
 #include "modbus.h"
 
-uint32_t mVolts;
-uint32_t muAmps;
-uint32_t firstMuAmps = 0;
+uint16_t mVolts;
+uint16_t muAmps;
+uint16_t firstMuAmps = 0;
 /*
                          Main application
  */

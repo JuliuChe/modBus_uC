@@ -31,7 +31,7 @@ static uint16_t measure_adc(uint8_t channel)
 	// TODO -> complete adc measure
 }
 
-uint32_t measure_voltage()
+uint16_t measure_voltage()
 {
    uint32_t result=0; 
    uint32_t mVolt;
@@ -44,7 +44,7 @@ uint32_t measure_voltage()
     return mVolt;
 }
 
-uint32_t measure_current(uint16_t offset)
+uint16_t measure_current(uint16_t offset)
 {
     uint32_t result=0; 
     uint32_t mV;
