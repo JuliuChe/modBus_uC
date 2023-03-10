@@ -50,19 +50,22 @@ uint8_t modbus_analyse_and_answer(void)
     rx_buf[i]=EUSART1_Read();
     }
     uint8_t length =0;
+    uint16_t address=0;
+    uint16_t numReg=0;
+    uint8_t* ptrTxBuf;
     if(rx_buf[0]==0x80){
         if((rx_buf[index-1]+rx_buf[index-2])==CRC16(rx_buf, (index-2))
         {
             switch(*rx_buf)
             {
                 case READ_INPUT_REGISTERS:
-                    uint16_t address=(rx_buf[1]<<8)+rx_buf[2];
-                    uint16_t numReg = (rx_buf[3]<<8)+rx_buf[4];
+                    address=(rx_buf[1]<<8)+rx_buf[2];
+                    numReg = (rx_buf[3]<<8)+rx_buf[4];
                     tx_buf[0]=READ_INPUT_REGISTERS;
                     if(numReg<128){
                     tx_buf[1]=(2*numReg);
                     }
-                    uint8_t* ptrTxBuf=tx_buf[2];
+                    ptrTxBuf=tx_buf[2];
                             length +=2;
                     for(int i=0; i<numReg;i++)
                     {
