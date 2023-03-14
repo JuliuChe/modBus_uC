@@ -48,6 +48,7 @@
 
 #include "interrupt_manager.h"
 #include "mcc.h"
+#include "modbus.h"
 
 void  INTERRUPT_Initialize (void)
 {
@@ -61,6 +62,7 @@ void __interrupt() INTERRUPT_InterruptManager (void)
     if(INTCONbits.TMR0IE == 1 && INTCONbits.TMR0IF == 1)
     {
         TMR0_ISR();
+        modbus_timer();
         
         
     }
@@ -74,6 +76,7 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         else if(PIE1bits.RC1IE == 1 && PIR1bits.RC1IF == 1)
         {
             EUSART1_RxDefaultInterruptHandler();
+            modbus_char_recvd(EUSART1_Read());
             PIR1bits.RC1IF =0;
         } 
         else

@@ -240,9 +240,9 @@ void EUSART1_Receive_ISR(void)
 
 void EUSART1_RxDataHandler(void){
     // use this default receive interrupt handler code
-    TMR0_Reload();
-    TMR0_StartTimer();
-
+   // TMR0_Reload();
+   // TMR0_StartTimer();
+//    modbus_char_recvd(0);
     
     eusart1RxBuffer[eusart1RxHead++] = RCREG1;
     if(sizeof(eusart1RxBuffer) <= eusart1RxHead)

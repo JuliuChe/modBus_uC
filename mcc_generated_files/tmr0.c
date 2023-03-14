@@ -155,7 +155,7 @@ void TMR0_DefaultInterruptHandler(void){
     // or set custom function using TMR0_SetInterruptHandler()
 
     
-    modbus_timer();    
+  //  modbus_timer();    
     
 }
 
