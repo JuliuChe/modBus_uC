@@ -28,32 +28,30 @@ void adc_init(void)
  */
 static uint16_t measure_adc(uint8_t channel)
 {
-	// TODO -> complete adc measure
+    uint32_t result = 0;
+   for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)
+   {
+    result += ADC_GetConversion(channel);
+   }
+       result = result / AVERAGE_SAMPLES;
+       return result;
 }
 
 uint16_t measure_voltage()
 {
-   uint32_t result=0; 
+   uint32_t result=measure_adc(voltage); 
    uint32_t mVolt;
-   for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)
-   {
-    result += ADC_GetConversion(voltage);
-   } 
-   result = result / AVERAGE_SAMPLES;
+
    mVolt = (ADC_REFH * result) / ADC_RESOLUTION;
     return mVolt;
 }
 
 uint16_t measure_current(uint16_t offset)
 {
-    uint32_t result=0; 
-    uint32_t mV;
-    for(uint8_t i=0;i<AVERAGE_SAMPLES;i++)    {
-        result += ADC_GetConversion(current);
-    } 
-    result = result / AVERAGE_SAMPLES;
-    mV = ( result*ADC_REFH) / (ADC_RESOLUTION);
-    uint32_t uAmp = (mV*1000)/(GAIN*RESISTOR);
+    uint32_t result=measure_adc(current); 
+    uint32_t uAmp;
+    uAmp = ( result*ADC_REFH) / (ADC_RESOLUTION);
+    uAmp = (uAmp*1000)/(GAIN*RESISTOR);
     
     if (uAmp<offset)
     {
