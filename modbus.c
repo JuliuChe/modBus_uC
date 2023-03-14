@@ -28,7 +28,7 @@ uint16_t holding_registers[2];
 uint8_t rx_buf[256];
 uint8_t tx_buf[256];
 uint16_t index=0;
- uint8_t temp_CRC;
+uint8_t temp_CRC;
 // Current position pointer for storing receive position
 uint8_t recPtr = 0;
 
@@ -55,10 +55,10 @@ uint8_t modbus_analyse_and_answer(void)
     uint8_t* ptrTxBuf;
 
    
-    temp_CRC =rx_buf[1];
     if(rx_buf[0]==modbusAddress){
         if((rx_buf[index-1]<<8 | rx_buf[index-2])==CRC16(rx_buf, (index-2)))
         {
+            tx_buf[0]=modbusAddress;
             switch(rx_buf[1])
             {
                 case READ_INPUT_REGISTERS:
@@ -66,17 +66,24 @@ uint8_t modbus_analyse_and_answer(void)
                     addressReg=((rx_buf[2]<<8)|rx_buf[3]);
                     numReg = ((rx_buf[4]<<8)|rx_buf[5]);
                     
-                    
-                    tx_buf[0]=modbusAddress;
-                    tx_buf[1]=READ_INPUT_REGISTERS;
-                    if(numReg>2){
-                    //error                      
+                    if((numReg>=2 && addressReg>=1) || numReg<1){
+                    //error, number of registers is too high  
+                     tx_buf[1]=0x84;
+                     tx_buf[2]=ILLEGAL_DATA_VALUE;
+                     length=3;
+                    }
+                    else if(addressReg>1 ||addressReg<0) 
+                    {
+                    //error starting address is out of bound
+                     tx_buf[1]=0x84;
+                     tx_buf[2]=ILLEGAL_DATA_ADDRESS;
+                     length=3;
+                             
                     }
                     else
                     {
+                    tx_buf[1]=READ_INPUT_REGISTERS;
                     tx_buf[2]=(2*numReg);
-                    }
-                    
                     ptrTxBuf=&tx_buf[3];
                             length +=3;
                             
@@ -88,6 +95,9 @@ uint8_t modbus_analyse_and_answer(void)
                         ptrTxBuf++;
                         length+=2;
                     }
+                    }
+                    
+                    
                             modbus_send(length);
                 }
                             break;
@@ -97,19 +107,25 @@ uint8_t modbus_analyse_and_answer(void)
                     addressReg=((rx_buf[2]<<8)|rx_buf[3]);
                     numReg = ((rx_buf[4]<<8)|rx_buf[5]);
                     
-                    
-                    tx_buf[0]=modbusAddress;
-                    tx_buf[1]=READ_HOLDING_REGISTERS;
-                    if(numReg>1){
-                    //error                      
+                    if(numReg!=1){
+                    //error, number of registers is too high  
+                     tx_buf[1]=0x83;
+                     tx_buf[2]=ILLEGAL_DATA_VALUE;
+                     length=3;
+                    }
+                    else if(addressReg!=0) 
+                    {
+                    //error starting address is out of bound
+                     tx_buf[1]=0x83;
+                     tx_buf[2]=ILLEGAL_DATA_ADDRESS;
+                     length=3;
                     }
                     else
                     {
+                    tx_buf[1]=READ_HOLDING_REGISTERS;
                     tx_buf[2]=(2*numReg);
-                    }
-                    
                     ptrTxBuf=&tx_buf[3];
-                            length +=3;
+                    length +=3;
                             
                     for(int i=(addressReg); i<(addressReg+numReg);i++)
                     {
@@ -119,7 +135,8 @@ uint8_t modbus_analyse_and_answer(void)
                         ptrTxBuf++;
                         length+=2;
                     }
-                            modbus_send(length);
+                    }      
+                     modbus_send(length);
                 }
                     
                     break;
@@ -130,7 +147,7 @@ uint8_t modbus_analyse_and_answer(void)
                     holding_registers[0]=valReg;
                     if(addressReg==0)
                     {
-                    tx_buf[0]=modbusAddress;
+                    
                     tx_buf[1]=WRITE_SINGLE_REGISTER;
                     tx_buf[2]=0;
                     tx_buf[3]=addressReg;    
@@ -138,9 +155,24 @@ uint8_t modbus_analyse_and_answer(void)
                     tx_buf[5]=(holding_registers[0]);
                     length=6;
                      }
+                    else
+                    {
+                    tx_buf[1]=0x86;
+                    tx_buf[2]=ILLEGAL_DATA_ADDRESS;
+                    length=3;
+                    }
                     modbus_send(length);
                 }
                     break;
+                default:
+                {
+                    tx_buf[1]=((rx_buf[1])|0x80);
+                    tx_buf[2]=ILLEGAL_FUNCTION;
+                    length=3;
+                    modbus_send(length);
+
+                }
+                break;
                     
                     
             }
@@ -189,6 +221,6 @@ void modbus_send(uint8_t length)
 void modbus_init(uint8_t address)
 {
 	modbusAddress = address;
-  // TODO -> configute timer for modbus usage
+  // TODO -> configure timer for modbus usage
     
 }

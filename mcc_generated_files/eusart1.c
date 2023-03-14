@@ -101,7 +101,7 @@ void EUSART1_Initialize(void)
     // SPEN enabled; RX9 9-bit; CREN enabled; ADDEN disabled; SREN disabled; 
     RCSTA1 = 0xD0;
 
-    // TX9 9-bit; TX9D 1; SENDB sync_break_complete; TXEN enabled; SYNC asynchronous; BRGH hi_speed; CSRC slave_mode; 
+    // TX9 9-bit; TX9D 1; SENDB sync_break_complete; TXEN enabled; SYNC asynchronous; BRGH hi_speed; CSRC slave; 
     TXSTA1 = 0x65;
 
     // 
