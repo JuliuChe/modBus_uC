@@ -49,7 +49,7 @@ uint16_t measure_voltage()
 uint16_t measure_current(uint16_t offset)
 {
     uint32_t result=measure_adc(current); 
-    uint32_t uAmp;
+    uint32_t uAmp=0;
     uAmp = ( result*ADC_REFH) / (ADC_RESOLUTION);
     uAmp = (uAmp*1000)/(GAIN*RESISTOR);
     
