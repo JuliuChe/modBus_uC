@@ -33,6 +33,7 @@ void modbus_timer(void)
 {
     TMR0_StopTimer();
     modbus_analyse_and_answer();
+    index=0;
 
 
 }
@@ -125,11 +126,12 @@ uint8_t modbus_analyse_and_answer(void)
                     tx_buf[4] = (holding_registers[addressReg]);
                     length = 5;
                 }
+                 modbus_send(length);
             }
-                modbus_send(length);
-            }
+                break;
+            
 
-            break;
+            
         case WRITE_SINGLE_REGISTER:
             {
                 addressReg = ((rx_buf[2] << 8) | rx_buf[3]);
@@ -168,6 +170,7 @@ uint8_t modbus_analyse_and_answer(void)
             break;
 
 
+            }
         }
     }
 }
@@ -195,7 +198,7 @@ void modbus_send(uint8_t length)
     temp16 = CRC16(tx_buf, length); 
     (*ptrTxBuf) = temp16;
     ptrTxBuf++;
-    (*ptrTxBuf) = temp16 >> 8;
+    (*ptrTxBuf) = temp16>> 8;
     length += 2; // add 2 CRC bytes for total size
     
     //redirect the pointer to the beginning of the rx_buf table
@@ -209,6 +212,7 @@ void modbus_send(uint8_t length)
         }
         ptrTxBuf++;
     }
+    length=0;
     // For all the bytes to be transmitted
     // uart_send(tx_buf,length);
 }

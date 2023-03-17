@@ -48,7 +48,7 @@
 
 #include "interrupt_manager.h"
 #include "mcc.h"
-#include "modbus.h"
+#include "../modbus.h"
 
 void  INTERRUPT_Initialize (void)
 {
