@@ -4,12 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/main.c</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/modbus.c</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/eusart1.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/adc.c</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/modbus.h</file>
-            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/interrupt_manager.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/measure.h</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/mcc.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/lcd/lcd.c</file>
             <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/tmr0.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/measure.c</file>
+            <file>file:/C:/Users/Julie/MPLABXProjects/modBus_uC/mcc_generated_files/epwm1.c</file>
         </group>
     </open-files>
 </project-private>
