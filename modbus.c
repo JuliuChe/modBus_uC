@@ -212,7 +212,7 @@ void modbus_send(uint8_t length)
         }
         ptrTxBuf++;
     }
-    length=0;
+
     // For all the bytes to be transmitted
     // uart_send(tx_buf,length);
 }
