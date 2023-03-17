@@ -40,7 +40,7 @@ static uint16_t measure_adc(uint8_t channel)
 uint16_t measure_voltage()
 {
    uint32_t result=measure_adc(voltage); 
-   uint32_t mVolt;
+   uint32_t mVolt=0;
 
    mVolt = (ADC_REFH * result) / ADC_RESOLUTION;
     return mVolt;
